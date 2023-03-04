@@ -1,6 +1,17 @@
 import { Link } from "react-router-dom";
+import { auth } from "../../util/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useState } from "react";
 
 export default function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const signIn = async (e) => {
+    e.preventDefault();
+    await signInWithEmailAndPassword(auth, email, password);
+  };
+
   return (
     <>
       <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -12,7 +23,7 @@ export default function Login() {
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6" onSubmit={signIn}>
               <div>
                 <label
                   htmlFor="email"
@@ -22,6 +33,8 @@ export default function Login() {
                 </label>
                 <div className="mt-2">
                   <input
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     id="email"
                     name="email"
                     type="email"
@@ -41,6 +54,8 @@ export default function Login() {
                 </label>
                 <div className="mt-2">
                   <input
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     id="password"
                     name="password"
                     type="password"
